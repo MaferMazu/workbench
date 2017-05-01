@@ -11,6 +11,7 @@ import operator
 import pprint
 from IPython.utils.coloransi import TermColors as color
 #pylint: disable=no-member
+from traitlets.config import Config
 
 try:
     import pandas as pd
@@ -246,7 +247,8 @@ class WorkbenchShell(object):
 
         # Now that we have the Workbench connection spun up, we register some stuff
         # with the embedded IPython interpreter and than spin it up
-        cfg = IPython.config.loader.Config()
+        # cfg = IPython.config.loader.Config()
+        cfg = Config()
         cfg.InteractiveShellEmbed.autocall = 2
         cfg.InteractiveShellEmbed.colors = 'Linux'
         cfg.InteractiveShellEmbed.color_info = True
