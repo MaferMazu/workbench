@@ -17,8 +17,9 @@ before_install:
     - tar xvfz wheelhouse.tar.gz
     - wget http://s3-us-west-2.amazonaws.com/workbench-data/memory_images/exemplar4.vmem -O workbench/data/memory_images/exemplar4.vmem
 install:
-    - sudo pip install tox
-    - sudo pip install coveralls
+    - pip install Cython
+    - pip install tox
+    - pip install coveralls
 script: 
     - tox -v -e $TOX_ENV
 after_success:
