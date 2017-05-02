@@ -32,7 +32,7 @@ setup(
     scripts=['workbench/server/workbench_server', 'workbench_apps/workbench_cli/workbench'],
     tests_require=['tox'],
     install_requires=['cython', 'distorm3', 'elasticsearch', 'funcsigs', 'flask', 'filemagic', 
-                      'ipython', 'lz4', 'mock', 'numpy', 'pandas', 'pefile',
+                      'ipython==5.3.0', 'lz4', 'mock', 'numpy', 'pandas', 'pefile',
                       'py2neo==1.6.4', 'pymongo', 'pytest', 'rekall==1.0.3', 'requests',
                       'ssdeep==2.9-0.3', 'urllib3', 'yara', 'zerorpc', 'cython'],
     license='MIT',
