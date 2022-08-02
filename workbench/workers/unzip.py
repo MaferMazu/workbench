@@ -5,9 +5,9 @@ import zerorpc
 import pprint
 import os
 try:
-    from cStringIO import StringIO
+    from io import StringIO
 except ImportError:
-    from StringIO import StringIO
+    from io import StringIO
 
 class Unzip(object):
     ''' This worker unzips a zipped file '''
@@ -51,7 +51,7 @@ def test():
     # Execute the worker (unit test)
     worker = Unzip()
     output = worker.execute(input_data)
-    print '\n<<< Unit Test >>>'
+    print('\n<<< Unit Test >>>')
     pprint.pprint(output)
 
     # For coverage
@@ -59,7 +59,7 @@ def test():
 
     # Execute the worker (server test)
     output = workbench.work_request('unzip', md5)
-    print '\n<<< Server Test >>>'
+    print('\n<<< Server Test >>>')
     pprint.pprint(output)
 
 if __name__ == "__main__":

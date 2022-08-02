@@ -50,7 +50,7 @@ class TCPDumpToWorkbench(object):
         self.on_deck = None
 
         # Report the tcpdump command being used
-        print 'Capturing with: %s' % self.tcpdump_cmd
+        print('Capturing with: %s' % self.tcpdump_cmd)
 
     def __enter__(self):
         ''' Return self (with statement idiom) '''
@@ -89,7 +89,7 @@ class TCPDumpToWorkbench(object):
 
         # Open the file and send it to workbench
         storage_name = "streaming_pcap" + str(self.pcap_index)
-        print filename, storage_name
+        print(filename, storage_name)
         with open(filename,'rb') as f:
             self.workbench.store_sample(f.read(), storage_name, 'pcap')
         self.pcap_index += 1
@@ -105,7 +105,7 @@ class TCPDumpToWorkbench(object):
                                installed or not in path): %s' % (exec_args))
         out, err = self.tcpdump_process.communicate()
         if out:
-            print 'standard output of subprocess: %s' % out
+            print('standard output of subprocess: %s' % out)
         if err:
             raise RuntimeError('%s\ntcpdump had output on stderr: %s' % (exec_args, err))
         if self.tcpdump_process.returncode:
@@ -113,7 +113,7 @@ class TCPDumpToWorkbench(object):
 
     def __exit__(self, func_type, value, traceback):
         ''' Class Cleanup '''
-        print '\nTCP Dumper.. Cleaning up :)'
+        print('\nTCP Dumper.. Cleaning up :)')
 
         # Terminate the tcpdump process
         self.tcpdump_process.kill()
@@ -137,7 +137,7 @@ def main():
     listen = args.listen
 
     # Print out informative message
-    print 'Dumping PCAPs to Workbench server. Use ^C to stop this script...'
+    print('Dumping PCAPs to Workbench server. Use ^C to stop this script...')
 
     # Spin up workbench client
     workbench = zerorpc.Client(timeout=300, heartbeat=60)
@@ -148,7 +148,7 @@ def main():
         with TCPDumpToWorkbench(listen) as dumper:
             dumper.execute()
     except KeyboardInterrupt:
-        print 'Exiting...'
+        print('Exiting...')
         sys.exit()    
 
 

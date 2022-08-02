@@ -2,7 +2,7 @@
 
 import zerorpc
 import os
-import client_helper
+from . import client_helper
 
 def run():
     """This client gets the raw bro logs from PCAP files."""
@@ -31,12 +31,12 @@ def run():
             results = workbench.work_request('pcap_bro', md5)
 
             # Results is just a dictionary of Bro log file names and their MD5s in workbench
-            for log_name, md5 in results['pcap_bro'].iteritems():
+            for log_name, md5 in results['pcap_bro'].items():
 
                 # Just want the logs
                 if log_name.endswith('_log'):
                     bro_log = workbench.get_sample(md5)['sample']['raw_bytes']
-                    print '\n\n<<< Bro log: %s >>>\n %s' % (log_name, str(bro_log)[:500])
+                    print('\n\n<<< Bro log: %s >>>\n %s' % (log_name, str(bro_log)[:500]))
 
 def test():
     """Executes pcap_bro_raw test."""

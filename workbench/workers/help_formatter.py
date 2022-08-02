@@ -30,7 +30,7 @@ class HelpFormatter(object):
 
         # WTF: Alert on unknown type_tag and return a string of the input_data
         else:
-            print 'Alert: help_formatter worker received malformed object: %s' % str(input_data)
+            print('Alert: help_formatter worker received malformed object: %s' % str(input_data))
             output = '\n%s%s%s' % (color.Red, str(input_data), color.Normal)
 
         # Return the formatted and colored help
@@ -53,19 +53,19 @@ def test():
     # Execute the worker (unit test)
     worker = HelpFormatter()
     output = worker.execute(input_data1)
-    print '\n<<< Unit Test >>>'
-    print output['help']
+    print('\n<<< Unit Test >>>')
+    print(output['help'])
     output = worker.execute(input_data2)
-    print '\n<<< Unit Test >>>'
-    print output['help']
+    print('\n<<< Unit Test >>>')
+    print(output['help'])
     output = worker.execute(input_data3)
-    print '\n<<< Unit Test >>>'
-    print output['help']      
+    print('\n<<< Unit Test >>>')
+    print(output['help'])      
 
     # Execute the worker (server test)
     output = workbench.work_request('help_formatter', 'meta')
-    print '\n<<< Server Test >>>'
-    print output['help_formatter']['help']
+    print('\n<<< Server Test >>>')
+    print(output['help_formatter']['help'])
 
 if __name__ == "__main__":
     test()

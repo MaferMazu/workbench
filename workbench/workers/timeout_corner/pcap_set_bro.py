@@ -44,18 +44,18 @@ def test():
 
     # Now store the sample set
     set_md5 = workbench.store_sample_set(pcap_md5s)
-    print set_md5
+    print(set_md5)
 
     # Execute the worker (unit test)
     worker = PcapSetBro()
     output = worker.execute({'sample_set':{'md5_list':pcap_md5s}})
-    print '\n<<< Unit Test >>>'
+    print('\n<<< Unit Test >>>')
     import pprint
     pprint.pprint(output)
 
     # Execute the worker (server test)
     output = workbench.work_request('pcap_set_bro', set_md5)
-    print '\n<<< Server Test >>>'
+    print('\n<<< Server Test >>>')
     import pprint
     pprint.pprint(output)
 

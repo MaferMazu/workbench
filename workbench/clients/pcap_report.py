@@ -3,7 +3,7 @@
 import zerorpc
 import os
 import pprint
-import client_helper
+from . import client_helper
 import flask
 
 STATIC_DIR = os.path.join(os.path.dirname(

@@ -108,9 +108,9 @@ def test():
     help = WorkbenchShellHelp()
 
     # Now execute all the help methods
-    for name, method in help._all_help_methods().iteritems():
-        print '\n%s%s%s' % (color.Red, name, color.Normal)
-        print '%s' % method()
+    for name, method in help._all_help_methods().items():
+        print('\n%s%s%s' % (color.Red, name, color.Normal))
+        print('%s' % method())
 
 if __name__ == '__main__':
     test()

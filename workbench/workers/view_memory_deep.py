@@ -15,7 +15,7 @@ class ViewMemoryDeep(object):
         output = input_data['view_memory']
         output['tables'] = {}
         for data in [input_data[key] for key in ViewMemoryDeep.dependencies]:
-            for name,table in data['tables'].iteritems():
+            for name,table in data['tables'].items():
                 output['tables'].update({name: table})
         return output
 
@@ -50,13 +50,13 @@ def test():
     # Execute the worker (unit test)
     worker = ViewMemoryDeep()
     output = worker.execute(input_data)
-    print '\n<<< Unit Test >>>'
+    print('\n<<< Unit Test >>>')
     pprint.pprint(output)
     assert 'Error' not in output
 
     # Execute the worker (server test)
     output = workbench.work_request('view_memory_deep', md5)
-    print '\n<<< Server Test >>>'
+    print('\n<<< Server Test >>>')
     pprint.pprint(output)
 
 if __name__ == "__main__":

@@ -16,7 +16,7 @@ class ViewPE(object):
         view = {}
         view['indicators'] = list(set([item['category'] for item in input_data['pe_indicators']['indicator_list']]))
         view['peid_matches'] = input_data['pe_peid']['match_list']
-        view['yara_sigs'] = input_data['yara_sigs']['matches'].keys()
+        view['yara_sigs'] = list(input_data['yara_sigs']['matches'].keys())
         view['classification'] = input_data['pe_classifier']['classification']
         view['disass'] = self.safe_get(input_data, ['pe_disass', 'decode'])[:15]
         view.update(input_data['meta'])
@@ -55,12 +55,12 @@ def test():
     # Execute the worker (unit test)
     worker = ViewPE()
     output = worker.execute(input_data)
-    print '\n<<< Unit Test >>>'
+    print('\n<<< Unit Test >>>')
     pprint.pprint(output)
 
     # Execute the worker (server test)
     output = workbench.work_request('view_pe', md5)
-    print '\n<<< Server Test >>>'
+    print('\n<<< Server Test >>>')
     pprint.pprint(output)
 
 if __name__ == "__main__":

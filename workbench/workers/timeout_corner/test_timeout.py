@@ -25,21 +25,21 @@ def test():
     workbench.connect("tcp://127.0.0.1:4242")
 
     # Execute the worker (unit test)
-    print '\n<<< Unit Test >>>'
+    print('\n<<< Unit Test >>>')
     worker = Test_Timeout()
     output = worker.execute(None)
     import pprint
     pprint.pprint(output)
 
     # Execute the worker (server test)
-    print '\n<<< Server Test >>>'
+    print('\n<<< Server Test >>>')
 
     # Execute the worker (server test) (note no unit test as the test is testing server timeouts)
     try:
         workbench.work_request('test_timeout','123')
         raise RuntimeError('Timeout did not fail... unexpected, investigate!')
     except zerorpc.exceptions.TimeoutExpired:
-        print 'Timeout failed as expected.. so success!'
+        print('Timeout failed as expected.. so success!')
 
 if __name__ == "__main__":
     test()

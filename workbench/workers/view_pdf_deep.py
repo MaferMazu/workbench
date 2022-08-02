@@ -37,12 +37,12 @@ def test():
     # Execute the worker (unit test)
     worker = ViewPDFDeep()
     output = worker.execute(input_data)
-    print '\n<<< Unit Test >>>'
+    print('\n<<< Unit Test >>>')
     pprint.pprint(output)
     
     # Execute the worker (server test)
     output = workbench.work_request('view_pdf_deep', md5)
-    print '\n<<< Server Test >>>'
+    print('\n<<< Server Test >>>')
     pprint.pprint(output)
 
 if __name__ == "__main__":

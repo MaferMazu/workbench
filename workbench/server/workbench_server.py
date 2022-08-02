@@ -16,16 +16,16 @@ import json
 import hashlib
 import inspect
 import funcsigs
-import ConfigParser
+import configparser
 import magic
 import datetime
 import lz4
 from IPython.utils.coloransi import TermColors as color
 #pylint: disable=no-member
 try:
-    from cStringIO import StringIO
+    from io import StringIO
 except ImportError:
-    from StringIO import StringIO
+    from io import StringIO
 
 # Workbench server imports
 try:
@@ -33,18 +33,18 @@ try:
     from . import els_indexer
     from . import neo_db
     from . import plugin_manager
-    from bro import bro_log_reader
+    from .bro import bro_log_reader
     from . import version
 
 # Okay this happens when you're running workbench in a debugger so having
 # this is super handy and we'll keep it even though it hurts coverage score.
 except ValueError:
-    import data_store
-    import els_indexer
-    import neo_db
-    import plugin_manager
-    from bro import bro_log_reader
-    import version
+    from . import data_store
+    from . import els_indexer
+    from . import neo_db
+    from . import plugin_manager
+    from .bro import bro_log_reader
+    from . import version
 
 
 class WorkBench(object):
@@ -70,7 +70,7 @@ class WorkBench(object):
 
         # Workbench Server Version
         self.version = version.__version__
-        print '<<< Workbench Server Version %s >>>' % self.version
+        print('<<< Workbench Server Version %s >>>' % self.version)
 
         # Open DataStore
         self.data_store = data_store.DataStore(**store_args)
@@ -79,14 +79,14 @@ class WorkBench(object):
         try:
             self.indexer = els_indexer.ELSIndexer(**{'hosts': els_hosts} if els_hosts else {})
         except SystemExit:
-            print 'Could not connect to ELS. Is it running?'
+            print('Could not connect to ELS. Is it running?')
             self.indexer = els_indexer.ELSStubIndexer(**{'uri': neo_uri} if neo_uri else {})
 
         # Neo4j DB
         try:
             self.neo_db = neo_db.NeoDB(**{'uri': neo_uri} if neo_uri else {})
         except RuntimeError:
-            print 'Could not connect to Neo4j DB. Is it running?  $ neo4j start'
+            print('Could not connect to Neo4j DB. Is it running?  $ neo4j start')
             self.neo_db = neo_db.NeoDBStub(**{'uri': neo_uri} if neo_uri else {})
 
         # Create Plugin Manager
@@ -116,7 +116,7 @@ class WorkBench(object):
 
         # If the sample comes in with an unknown type_tag try to determine it
         if type_tag == 'unknown':
-            print 'Info: Unknown File -- Trying to Determine Type...'
+            print('Info: Unknown File -- Trying to Determine Type...')
             type_tag = self.guess_type_tag(input_bytes, filename)
 
         # Do we have a compressed sample? If so decompress it
@@ -265,7 +265,7 @@ class WorkBench(object):
             return sample['raw_bytes']
         else:
             compress_df = lz4.dumps(sample['raw_bytes'])
-            print 'Info: DataFrame compression %.0f%%' % (len(compress_df)*100.0/float(len(sample['raw_bytes'])))
+            print('Info: DataFrame compression %.0f%%' % (len(compress_df)*100.0/float(len(sample['raw_bytes']))))
             return compress_df
 
     def guess_type_tag(self, input_bytes, filename):
@@ -298,16 +298,16 @@ class WorkBench(object):
 
                 # If we get 'data' back look at the filename
                 if type_tag == 'data':
-                    print 'Info: File -- Trying to Determine Type from filename...'
+                    print('Info: File -- Trying to Determine Type from filename...')
                     ext = os.path.splitext(filename)[1][1:]
                     if ext in ['mem','vmem']:
                         type_tag = 'mem'
                     else:
-                        print 'Alert: Failed to Determine Type for %s' % filename
+                        print('Alert: Failed to Determine Type for %s' % filename)
                         exit(1) # Temp
                 return type_tag
             else:
-                print 'Alert: Sample Type could not be Determined'
+                print('Alert: Sample Type could not be Determined')
                 return 'unknown'
 
     def add_tags(self, md5, tags):
@@ -490,7 +490,7 @@ class WorkBench(object):
                     # Last subkey
                     key = subkey.split('.')[-1]
                     if key == '*':
-                        for key in tmp.keys():
+                        for key in list(tmp.keys()):
                             sub_results[key] = tmp[key]
                     else:
                         sub_results[key] = tmp[key]
@@ -542,7 +542,7 @@ class WorkBench(object):
 
         # Sanity check
         if not md5_list:
-            print 'Warning: Trying to store an empty sample_set'
+            print('Warning: Trying to store an empty sample_set')
             return None
 
         # Remove any duplicates
@@ -676,7 +676,7 @@ class WorkBench(object):
 
     def list_all_workers(self):
         """ List all the currently loaded workers """
-        return self.plugin_meta.keys()
+        return list(self.plugin_meta.keys())
 
     def get_info(self, component):
         """ Get the information about this component """
@@ -692,11 +692,11 @@ class WorkBench(object):
 
         # Enforce dictionary input
         if not isinstance(info_dict, dict):
-            print 'Critical: info_dict must be a python dictionary, got %s' % type(info_dict)
+            print('Critical: info_dict must be a python dictionary, got %s' % type(info_dict))
             return
 
         # Ensure values are not functions/methods/classes
-        info_storage = {key:value for key, value in info_dict.iteritems() if not hasattr(value, '__call__')}
+        info_storage = {key:value for key, value in info_dict.items() if not hasattr(value, '__call__')}
 
         # Place the type_tag on it and store it
         info_storage['type_tag'] = type_tag
@@ -729,7 +729,7 @@ class WorkBench(object):
     def _store_information(self):
         """ Store infomation about Workbench and its commands """
         
-        print '<<< Generating Information Storage >>>'
+        print('<<< Generating Information Storage >>>')
 
         # Stores information on Workbench commands and signatures
         for name, meth in inspect.getmembers(self, predicate=inspect.isroutine):
@@ -801,7 +801,7 @@ class WorkBench(object):
 
         # Do I actually have this plugin? (might have failed, etc)
         if (worker_name not in self.plugin_meta):
-            print 'Alert: Request for non-existing or failed plugin: %s' % (worker_name)
+            print('Alert: Request for non-existing or failed plugin: %s' % (worker_name))
             return {}
 
         # If the results exist and the time_stamp is newer than the entire work_chain, I'm done
@@ -812,10 +812,10 @@ class WorkBench(object):
             if work_chain_mod_time < work_results[collection]['__time_stamp']:
                 return work_results
             elif self.VERBOSE:
-                print 'VERBOSE: %s work_chain is newer than data' % (worker_name)
+                print('VERBOSE: %s work_chain is newer than data' % (worker_name))
         except WorkBench.DataNotFound:
             if self.VERBOSE:
-                print 'Verbose: %s data not found generating' % (worker_name)
+                print('Verbose: %s data not found generating' % (worker_name))
 
         # Okay either need to generate (or re-generate) the work results
         dependencies = self.plugin_meta[worker_name]['dependencies']
@@ -823,12 +823,12 @@ class WorkBench(object):
         for dependency in dependencies:
             dependant_results.update(self._recursive_work_resolver(dependency, md5))
         if self.VERBOSE:
-            print 'Verbose: new work for plugin: %s' % (worker_name)
+            print('Verbose: new work for plugin: %s' % (worker_name))
         work_results = self.plugin_meta[worker_name]['class']().execute(dependant_results)
 
         # Enforce dictionary output
         if not isinstance(work_results, dict):
-            print 'Critical: Plugin %s MUST produce a python dictionary!' % worker_name
+            print('Critical: Plugin %s MUST produce a python dictionary!' % worker_name)
             return None
 
         # Store the results and return
@@ -846,10 +846,10 @@ def run():
 
     # Load the configuration file relative to this script location
     config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config.ini')
-    workbench_conf = ConfigParser.ConfigParser()
+    workbench_conf = configparser.ConfigParser()
     config_ini = workbench_conf.read(config_path)
     if not config_ini:
-        print 'Could not locate config.ini file, tried %s : exiting...' % config_path
+        print('Could not locate config.ini file, tried %s : exiting...' % config_path)
         exit(1)
 
     # Pull configuration settings
@@ -863,15 +863,15 @@ def run():
         store_args = {'uri': datastore_uri, 'database': database, 'worker_cap':worker_cap, 'samples_cap':samples_cap}
         workbench = zerorpc.Server(WorkBench(store_args=store_args), name='workbench', heartbeat=60)
         workbench.bind('tcp://0.0.0.0:4242')
-        print '\nWorkbench is ready and feeling super duper!'
+        print('\nWorkbench is ready and feeling super duper!')
         gevent_signal(signal.SIGTERM, workbench.stop)
         gevent_signal(signal.SIGINT, workbench.stop)
         gevent_signal(signal.SIGKILL, workbench.stop)
         workbench.run()
-        print '\nWorkbench Server Shutting Down... and dreaming of sheep...'
+        print('\nWorkbench Server Shutting Down... and dreaming of sheep...')
 
     except zmq.error.ZMQError:
-        print '\nInfo: Could not start Workbench server (no worries, probably already running...)\n'
+        print('\nInfo: Could not start Workbench server (no worries, probably already running...)\n')
 
 
 # Test that just calls main

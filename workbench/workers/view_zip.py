@@ -21,7 +21,7 @@ class ViewZip(object):
 
         view = {}
         view['payload_md5s'] = input_data['unzip']['payload_md5s']
-        view['yara_sigs'] = input_data['yara_sigs']['matches'].keys()
+        view['yara_sigs'] = list(input_data['yara_sigs']['matches'].keys())
         view.update(input_data['meta'])
 
         # Okay this view is going to also give the meta data about the payloads
@@ -51,12 +51,12 @@ def test():
     # Execute the worker (unit test)
     worker = ViewZip()
     output = worker.execute(input_data)
-    print '\n<<< Unit Test >>>'
+    print('\n<<< Unit Test >>>')
     pprint.pprint(output)
 
     # Execute the worker (server test)
     output = workbench.work_request('view_zip', md5)
-    print '\n<<< Server Test >>>'
+    print('\n<<< Server Test >>>')
     pprint.pprint(output)
 
 if __name__ == "__main__":

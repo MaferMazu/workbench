@@ -1,7 +1,7 @@
 """This client pushes PCAPs -> MetaDaa -> ELS Indexer."""
 import zerorpc
 import os
-import client_helper
+from . import client_helper
 
 def run():
     """This client pushes PCAPs -> MetaDaa -> ELS Indexer."""
@@ -28,7 +28,7 @@ def run():
             # Index the view_pcap output (notice we can ask for any worker output)
             # Also (super important) it all happens on the server side.
             workbench.index_worker_output('view_pcap', md5, 'view_pcap', None)
-            print '\n\n<<< PCAP Data: %s Indexed>>>' % (base_name)
+            print('\n\n<<< PCAP Data: %s Indexed>>>' % (base_name))
 
 def test():
     """Executes pcap_meta_indexer test."""

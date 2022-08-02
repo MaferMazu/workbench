@@ -35,7 +35,7 @@ def tail_file(filename):
 def test():
     
     for line in tail_file('/var/log/system.log'):
-        print line
+        print(line)
 
 if __name__ == "__main__":
     test()

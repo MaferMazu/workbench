@@ -3,7 +3,7 @@
 import zerorpc
 import os
 import pprint
-import client_helper
+from . import client_helper
 
 def run():
     """This client pushes a file into Workbench."""
@@ -25,7 +25,7 @@ def run():
         raw_bytes = f.read()
         md5 = workbench.store_sample(raw_bytes, filename, 'exe')
         results = workbench.work_request('view', md5)
-        print 'Filename: %s' % filename
+        print('Filename: %s' % filename)
         pprint.pprint(results)
 
 def test():

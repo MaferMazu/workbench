@@ -2,7 +2,7 @@
 
 import zerorpc
 import os
-import client_helper
+from . import client_helper
 
 def add_it(workbench, file_list, labels):
     """Add the given file_list to workbench as samples, also add them as nodes.
@@ -149,8 +149,8 @@ def run():
             workbench.add_rel(result['md5'], sim_info['md5'], 'ssdeep')
 
     # Let them know where they can get there graph
-    print 'All done: go to http://localhost:7474/browser and execute this query: "%s"' % \
-        ('match (n)-[r]-() return n,r')
+    print('All done: go to http://localhost:7474/browser and execute this query: "%s"' % \
+        ('match (n)-[r]-() return n,r'))
 
 import pytest
 #pylint: disable=no-member

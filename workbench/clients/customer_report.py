@@ -2,7 +2,7 @@
 
 import zerorpc
 import os
-import client_helper
+from . import client_helper
 
 def run():
     """This client generates customer reports on all the samples in workbench."""
@@ -17,7 +17,7 @@ def run():
     all_set = workbench.generate_sample_set()
     results = workbench.set_work_request('view_customer', all_set)
     for customer in results:
-        print customer['customer']
+        print(customer['customer'])
 
 def test():
     """Executes test for customer_report."""

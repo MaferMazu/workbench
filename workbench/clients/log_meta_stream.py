@@ -3,7 +3,7 @@
 import zerorpc
 import os
 import pprint
-import client_helper
+from . import client_helper
 
 def run():
     """This client gets metadata about log files."""
@@ -27,11 +27,11 @@ def run():
 
             md5 = workbench.store_sample(f.read(), base_name, 'log')
             results = workbench.work_request('view_log_meta', md5)
-            print 'Filename: %s\n' % (base_name)
+            print('Filename: %s\n' % (base_name))
             pprint.pprint(results)
             stream_log = workbench.stream_sample(md5, {'max_rows':20})
             for row in stream_log:
-                print row
+                print(row)
 
 def test():
     """Executes log_meta_stream test."""

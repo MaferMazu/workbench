@@ -38,17 +38,17 @@ def process_files(path):
     num_files = len(file_list)
     total_files = 0
     start = datetime.datetime.now()
-    for i in xrange(10):
+    for i in range(10):
         for filename in file_list:
             with open(filename, 'rb') as f:
                 base_name = os.path.basename(filename)
                 md5 = workbench.store_sample(f.read(), base_name, type_tag)
                 workbench.work_request('view', md5)
-                print 'Filename: %s' % (base_name)
+                print('Filename: %s' % (base_name))
         total_files += num_files
     end = datetime.datetime.now()
     delta = end - start
-    print 'Files processed: %d  Time: %d seconds' % (total_files, delta.seconds)
+    print('Files processed: %d  Time: %d seconds' % (total_files, delta.seconds))
 
     # Close the workbench connection
     workbench.close()

@@ -42,7 +42,7 @@ class BroLogReader(object):
         while 1:
             _line = next(logfile).strip()
             if not _line.startswith('#close'):
-                yield self._cast_dict(dict(zip(field_names, _line.split(self.delimiter))))
+                yield self._cast_dict(dict(list(zip(field_names, _line.split(self.delimiter)))))
             else:
                 time.sleep(.1) # Give time for zeroRPC to finish messages
                 break
@@ -100,7 +100,7 @@ class BroLogReader(object):
         Returns:
             Cleaned Data dict.
         """
-        for key, value in data_dict.iteritems():
+        for key, value in data_dict.items():
             data_dict[key] = self._cast_value(value)
 
         # Fixme: resp_body_data can be very large so removing it for now
@@ -149,10 +149,10 @@ if __name__ == '__main__':
     PARSER = optparse.OptionParser()
     PARSER.add_option('--logfile', default=None, help='Logfile to read from.  Default: %default')
     (OPTIONS, ARGUMENTS) = PARSER.parse_args()
-    print OPTIONS, ARGUMENTS
+    print(OPTIONS, ARGUMENTS)
 
     # Create a BRO log file reader and pull from the logfile
     BRO_LOG = BroLogReader()
     RECORDS = BRO_LOG.read_log(open(OPTIONS.logfile, 'rb'))
     for row in RECORDS:
-        print row
+        print(row)

@@ -8,4 +8,4 @@ if __name__ == "__main__":
     workbench = zerorpc.Client(timeout=300, heartbeat=60)
     workbench.connect("tcp://127.0.0.1:4242")
     workbench.clear_db()
-    print 'Database completely wiped... Whee!'
+    print('Database completely wiped... Whee!')

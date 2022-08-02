@@ -26,7 +26,7 @@ class MetaDeepData(object):
         import math
         from collections import Counter
         p, lns = Counter(s), float(len(s))
-        return -sum( count/lns * math.log(count/lns, 2) for count in p.values())
+        return -sum( count/lns * math.log(count/lns, 2) for count in list(p.values()))
 
 # Unit test: Create the class, the proper input and run the execute() method for a test
 def test():
@@ -47,12 +47,12 @@ def test():
     # Execute the worker (unit test)
     worker = MetaDeepData()
     output = worker.execute(input_data)
-    print '\n<<< Unit Test >>>'
+    print('\n<<< Unit Test >>>')
     pprint.pprint(output)
 
     # Execute the worker (server test)
     output = workbench.work_request('meta_deep', md5)
-    print '\n<<< Server Test >>>'
+    print('\n<<< Server Test >>>')
     pprint.pprint(output)
 
 if __name__ == "__main__":

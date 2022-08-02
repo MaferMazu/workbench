@@ -16,15 +16,15 @@ from traitlets.config import Config
 try:
     import pandas as pd
 except ImportError:
-    print '\n%sNotice: pandas not found...' % color.Yellow
-    print '\t%sWe recommend installing pandas: %s$ pip install pandas%s' % (color.LightBlue, color.Red, color.Normal)
+    print('\n%sNotice: pandas not found...' % color.Yellow)
+    print('\t%sWe recommend installing pandas: %s$ pip install pandas%s' % (color.LightBlue, color.Red, color.Normal))
 
 try:
     import matplotlib.pyplot as plt
     plt.ion()
 except ImportError:
-    print '\n%sNotice: matplotlib not found...' % color.Yellow
-    print '\t%sWe recommend installing matplotlib: %s$ pip install matplotlib%s' % (color.LightBlue, color.Red, color.Normal)
+    print('\n%sNotice: matplotlib not found...' % color.Yellow)
+    print('\t%sWe recommend installing matplotlib: %s$ pip install matplotlib%s' % (color.LightBlue, color.Red, color.Normal))
 try:
     from . import client_helper
     from . import help_content
@@ -36,12 +36,12 @@ try:
 # Okay this happens when you're running in a debugger so having this is
 # super handy and we'll keep it even though it hurts coverage score.
 except (ImportError,ValueError):
-    import client_helper
-    import help_content
-    import version
-    import file_streamer
-    import repr_to_str_decorator
-    import auto_quote_xform
+    from . import client_helper
+    from . import help_content
+    from . import version
+    from . import file_streamer
+    from . import repr_to_str_decorator
+    from . import auto_quote_xform
 
 
 class WorkbenchShell(object):
@@ -97,8 +97,8 @@ class WorkbenchShell(object):
 
         # Recommend a tag
         if not tags:
-            print '\n%sRequired: Add a list of tags when you load samples (put \'unknown\' if you must). \
-                   \n\t%sExamples: [\'bad\'], [\'good\'], [\'bad\',\'aptz13\']%s' % (color.Yellow, color.Green, color.Normal)
+            print('\n%sRequired: Add a list of tags when you load samples (put \'unknown\' if you must). \
+                   \n\t%sExamples: [\'bad\'], [\'good\'], [\'bad\',\'aptz13\']%s' % (color.Yellow, color.Green, color.Normal))
             return
 
         # Do they want everything under a directory?
@@ -114,12 +114,12 @@ class WorkbenchShell(object):
                 raw_bytes = my_file.read()
                 md5 = hashlib.md5(raw_bytes).hexdigest()
                 if not self.workbench.has_sample(md5):
-                    print '%sStreaming Sample...%s' % (color.LightPurple, color.Normal)
+                    print('%sStreaming Sample...%s' % (color.LightPurple, color.Normal))
                     basename = os.path.basename(path)
                     md5 = self.streamer.stream_to_workbench(raw_bytes, basename, 'unknown', tags)
 
-                print '\n%s  %s%s %sLocked and Loaded...%s\n' % \
-                      (self.beer, color.LightPurple, md5[:6], color.Yellow, color.Normal)
+                print('\n%s  %s%s %sLocked and Loaded...%s\n' % \
+                      (self.beer, color.LightPurple, md5[:6], color.Yellow, color.Normal))
 
                 # Add tags to the sample
                 self.workbench.add_tags(md5, tags)
@@ -173,7 +173,7 @@ class WorkbenchShell(object):
             return
         tag_df = pd.DataFrame(tags)
         tag_df = self.vectorize(tag_df, 'tags')
-        print '\n%sSamples in Database%s' % (color.LightPurple, color.Normal)
+        print('\n%sSamples in Database%s' % (color.LightPurple, color.Normal))
         self.top_corr(tag_df)
 
     def pull_df(self, md5):
@@ -207,13 +207,13 @@ class WorkbenchShell(object):
 
         corr = df.corr().fillna(1)
         corr_dict = corr.to_dict()
-        for tag, count in tag_freq.iteritems():
-            print '  %s%s: %s%s%s  (' % (color.Green, tag, color.LightBlue, count, color.Normal),
-            tag_corrs = sorted(corr_dict[tag].iteritems(), key=operator.itemgetter(1), reverse=True)
+        for tag, count in tag_freq.items():
+            print('  %s%s: %s%s%s  (' % (color.Green, tag, color.LightBlue, count, color.Normal), end=' ')
+            tag_corrs = sorted(iter(corr_dict[tag].items()), key=operator.itemgetter(1), reverse=True)
             for corr_tag, value in tag_corrs[:5]:
                 if corr_tag != tag and (value > .2):
-                    print '%s%s:%s%.1f' % (color.Green, corr_tag, color.LightBlue, value),
-            print '%s)' % color.Normal
+                    print('%s%s:%s%.1f' % (color.Green, corr_tag, color.LightBlue, value), end=' ')
+            print('%s)' % color.Normal)
 
     def search(self, tags=None):
         """Wrapper for the Workbench search method
@@ -232,8 +232,8 @@ class WorkbenchShell(object):
             Returns:
                 The running versions of both the CLI and the Workbench Server
         """
-        print '%s<<< Workbench CLI Version %s >>>%s' % (color.LightBlue, self.version, color.Normal)
-        print self.workbench.help('version')
+        print('%s<<< Workbench CLI Version %s >>>%s' % (color.LightBlue, self.version, color.Normal))
+        print(self.workbench.help('version'))
 
     def run(self):
         ''' Running the workbench CLI '''
@@ -243,7 +243,7 @@ class WorkbenchShell(object):
 
         # Sample/Tag info and Help
         self.tags()
-        print '\n%s' % self.workbench.help('cli')
+        print('\n%s' % self.workbench.help('cli'))
 
         # Now that we have the Workbench connection spun up, we register some stuff
         # with the embedded IPython interpreter and than spin it up
@@ -284,8 +284,8 @@ class WorkbenchShell(object):
             _tmp_connect.close()
             del _tmp_connect
         except zerorpc.exceptions.LostRemote:
-            print '%sError: Could not connect to Workbench Server at %s:%s%s' % \
-                  (color.Red, server_info['server'], server_info['port'], color.Normal)
+            print('%sError: Could not connect to Workbench Server at %s:%s%s' % \
+                  (color.Red, server_info['server'], server_info['port'], color.Normal))
             sys.exit(1)
 
         # Okay do the real connection
@@ -293,7 +293,7 @@ class WorkbenchShell(object):
             self.workbench.close()
         self.workbench = zerorpc.Client(timeout=300, heartbeat=60)
         self.workbench.connect('tcp://'+server_info['server']+':'+server_info['port'])
-        print '\n%s<<< Connected: %s:%s >>>%s' % (color.Green, server_info['server'], server_info['port'], color.Normal)
+        print('\n%s<<< Connected: %s:%s >>>%s' % (color.Green, server_info['server'], server_info['port'], color.Normal))
 
     def _progress_print(self, sent, total):
         """Progress print show the progress of the current upload with a neat progress bar
@@ -417,7 +417,7 @@ def test():
     try:
         work_shell.run()
     except AttributeError: # IPython can get pissed off when run in a test harness
-        print 'Expected Fail... have a nice day...'
+        print('Expected Fail... have a nice day...')
 
 if __name__ == '__main__':
     test()

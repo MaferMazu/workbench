@@ -3,12 +3,12 @@
 import zerorpc
 import os
 import pprint
-import client_helper
+from . import client_helper
 import hashlib
 
 def chunks(data, chunk_size):
     """ Yield chunk_size chunks from data."""
-    for i in xrange(0, len(data), chunk_size):
+    for i in range(0, len(data), chunk_size):
         yield data[i:i+chunk_size]
 
 def run():

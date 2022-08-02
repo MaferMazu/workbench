@@ -3,7 +3,7 @@
 import zerorpc
 import os
 import pprint
-import client_helper
+from . import client_helper
 
 def run():
     """This client shows workbench extacting files from a zip file."""
@@ -23,13 +23,13 @@ def run():
             base_name = os.path.basename(filename)
             md5 = workbench.store_sample(f.read(), base_name, 'zip')
             results = workbench.work_request('view', md5)
-            print 'Filename: %s ' % (base_name)
+            print('Filename: %s ' % (base_name))
             pprint.pprint(results)
 
             # The unzip worker gives you a list of md5s back
             # Run meta on all the unzipped files.
             results = workbench.work_request('unzip', md5)
-            print '\n*** Filename: %s ***' % (base_name)
+            print('\n*** Filename: %s ***' % (base_name))
             for child_md5 in results['unzip']['payload_md5s']:
                 pprint.pprint(workbench.work_request('meta', child_md5))
 

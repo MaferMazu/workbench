@@ -38,11 +38,11 @@ class DirWatcher(object):
             gevent.sleep(1)
             after = self._file_timestamp_info(self.path)
 
-            added = [fname for fname in after.keys() if fname not in before.keys()]
-            removed = [fname for fname in before.keys() if fname not in after.keys()]
+            added = [fname for fname in list(after.keys()) if fname not in list(before.keys())]
+            removed = [fname for fname in list(before.keys()) if fname not in list(after.keys())]
             modified = []
 
-            for fname in before.keys():
+            for fname in list(before.keys()):
                 if fname not in removed:
                     if os.path.getmtime(fname) != before.get(fname):
                         modified.append(fname)

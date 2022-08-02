@@ -31,13 +31,13 @@ def test():
     # Execute the worker (unit test)
     worker = ViewCustomer()
     output = worker.execute(input_data)
-    print '\n<<< Unit Test >>>'
+    print('\n<<< Unit Test >>>')
     import pprint
     pprint.pprint(output)
 
     # Execute the worker (server test)
     output = workbench.work_request('view_customer', md5)
-    print '\n<<< Server Test >>>'
+    print('\n<<< Server Test >>>')
     pprint.pprint(output)
 
 if __name__ == "__main__":

@@ -12,7 +12,7 @@ import glob, os
 import hashlib
 import pprint
 import collections
-from rekall_adapter.rekall_adapter import RekallAdapter
+from .rekall_adapter.rekall_adapter import RekallAdapter
 
 class MemoryImageProcDump(object):
     ''' This worker dumps process pe files from memory image files. '''
@@ -56,7 +56,7 @@ class MemoryImageProcDump(object):
                     self.output['tables'][self.current_table_name].append(row)
     
             # Scrape any extracted files
-            print 'mem_procdump: Scraping dumped files...'
+            print('mem_procdump: Scraping dumped files...')
             for output_file in glob.glob('*'):
     
                 # Store the output into workbench, put md5s in the 'dumped_files' field
@@ -171,13 +171,13 @@ def test():
     # Execute the worker (unit test)
     worker = MemoryImageProcDump()
     output = worker.execute({'sample':{'raw_bytes':raw_bytes}})
-    print '\n<<< Unit Test >>>'
+    print('\n<<< Unit Test >>>')
     pprint.pprint(output)
     assert 'Error' not in output
 
     # Execute the worker (server test)
     output = workbench.work_request('mem_procdump', md5)
-    print '\n<<< Server Test >>>'
+    print('\n<<< Server Test >>>')
     pprint.pprint(output)
     assert 'Error' not in output
 

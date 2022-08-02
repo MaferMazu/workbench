@@ -50,7 +50,7 @@ class PEIndicators(object):
         # Have the PE File module process the file
         try:
             self.pefile_handle = pefile.PE(data=raw_bytes, fast_load=False)
-        except (AttributeError, pefile.PEFormatError), error:
+        except (AttributeError, pefile.PEFormatError) as error:
             return {'error': str(error), 'indicator_list': [{'Error': 'PE module failed!'}]}
 
         indicators = []
@@ -434,15 +434,15 @@ def test():
     # Execute the worker (unit test)
     worker = PEIndicators()
     output = worker.execute(workbench.get_sample(md5_bad))
-    print '\n<<< Unit Test 1 >>>'
+    print('\n<<< Unit Test 1 >>>')
     pprint.pprint(output)
     output = worker.execute(workbench.get_sample(md5_good))
-    print '\n<<< Unit Test 2 >>>'
+    print('\n<<< Unit Test 2 >>>')
     pprint.pprint(output)
 
     # Execute the worker (server test)
     output = workbench.work_request('pe_indicators', md5_bad)
-    print '\n<<< Server Test >>>'
+    print('\n<<< Server Test >>>')
     pprint.pprint(output)
 
 if __name__ == "__main__":

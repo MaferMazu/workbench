@@ -6,7 +6,7 @@ import gevent
 
 def gsleep():
     ''' Convenience method for gevent.sleep '''
-    print '*** Gevent Sleep ***'
+    print('*** Gevent Sleep ***')
     gevent.sleep(0)
 
 class PcapGraph(object):
@@ -80,7 +80,7 @@ class PcapGraph(object):
     def conn_log_graph(self, stream):
         ''' Build up a graph (nodes and edges from a Bro conn.log) '''
         conn_log = list(stream)
-        print 'Entering conn_log_graph...(%d rows)' % len(conn_log)
+        print('Entering conn_log_graph...(%d rows)' % len(conn_log))
         for row in stream:
 
             # Add the connection id with service as one of the labels
@@ -99,7 +99,7 @@ class PcapGraph(object):
     def http_log_graph(self, stream):
         ''' Build up a graph (nodes and edges from a Bro http.log) '''
         http_log = list(stream)
-        print 'Entering http_log_graph...(%d rows)' % len(http_log)
+        print('Entering http_log_graph...(%d rows)' % len(http_log))
         for row in http_log:
 
             # Skip '-' hosts
@@ -127,7 +127,7 @@ class PcapGraph(object):
     def dns_log_graph(self, stream):
         ''' Build up a graph (nodes and edges from a Bro dns.log) '''
         dns_log = list(stream)
-        print 'Entering dns_log_graph...(%d rows)' % len(dns_log)
+        print('Entering dns_log_graph...(%d rows)' % len(dns_log))
         for row in dns_log:
             
             # Skip '-' hosts
@@ -151,7 +151,7 @@ class PcapGraph(object):
     def weird_log_graph(self, stream):
         ''' Build up a graph (nodes and edges from a Bro weird.log) '''
         weird_log = list(stream)
-        print 'Entering weird_log_graph...(%d rows)' % len(weird_log)
+        print('Entering weird_log_graph...(%d rows)' % len(weird_log))
 
         # Here we're just going to capture that something weird
         # happened between two hosts
@@ -183,7 +183,7 @@ class PcapGraph(object):
     def files_log_graph(self, stream):
         ''' Build up a graph (nodes and edges from a Bro files.log) '''
         file_log = list(stream)
-        print 'Entering file_log_graph...(%d rows)' % len(file_log)
+        print('Entering file_log_graph...(%d rows)' % len(file_log))
         for row in file_log:
 
             # If the mime-type is interesting add the uri and the host->uri->host relationships
@@ -236,12 +236,12 @@ def test():
     # Execute the worker (unit test)
     worker = PcapGraph()
     output = worker.execute(input_data)
-    print '\n<<< Unit Test >>>'
+    print('\n<<< Unit Test >>>')
     pprint.pprint(output)
 
     # Execute the worker (server test)
     output = workbench.work_request('pcap_graph', md5)
-    print '\n<<< Server Test >>>'
+    print('\n<<< Server Test >>>')
     pprint.pprint(output)
 
 if __name__ == "__main__":

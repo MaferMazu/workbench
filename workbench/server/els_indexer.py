@@ -20,10 +20,10 @@ class ELSIndexer(object):
             self.els_search = elasticsearch.Elasticsearch(hosts)
             info = self.els_search.info()
             version = info['version']
-            print '\t- ELS Indexer connected: %s %s %s %s' % (str(hosts), info['name'],
-                                                          version['number'], version['lucene_version'])
+            print('\t- ELS Indexer connected: %s %s %s %s' % (str(hosts), info['name'],
+                                                          version['number'], version['lucene_version']))
         except elasticsearch.exceptions.ConnectionError:
-            print '\t- ELS connection failed! Is your ELS server running?'
+            print('\t- ELS connection failed! Is your ELS server running?')
             exit(1)
 
     def index_data(self, data, index_name, doc_type):
@@ -45,8 +45,8 @@ class ELSIndexer(object):
 
         try:
             self.els_search.index(index=index_name, doc_type=doc_type, body=data)
-        except Exception, error:
-            print 'Index failed: %s' % str(error)
+        except Exception as error:
+            print('Index failed: %s' % str(error))
             raise RuntimeError('Index failed: %s' % str(error))
 
     def search(self, index_name, query):
@@ -66,10 +66,10 @@ class ELSIndexer(object):
         try:
             results = self.els_search.search(index=index_name, body=query)
             return results
-        except Exception, error:
+        except Exception as error:
             error_str = 'Query failed: %s\n' % str(error)
             error_str += '\nIs there a dynamic script in the query?, see www.elasticsearch.org'
-            print error_str
+            print(error_str)
             raise RuntimeError(error_str)
 
 
@@ -79,21 +79,21 @@ class ELSStubIndexer(object):
     def __init__(self, hosts='[{"host": "localhost", "port": 9200}]'):
         """Stub Indexer Initialization."""
 
-        print 'ELS Stub Indexer connected: %s' % (str(hosts))
-        print 'Install ElasticSearch and python bindings for ELS indexer. See README.md'
-        print '%s %s' % (self, hosts)
+        print('ELS Stub Indexer connected: %s' % (str(hosts)))
+        print('Install ElasticSearch and python bindings for ELS indexer. See README.md')
+        print('%s %s' % (self, hosts))
 
     def index_data(self, data, index_name, doc_type):
         """Index data in Stub Indexer."""
 
-        print 'ELS Stub Indexer getting called...'
-        print '%s %s %s %s' % (self, data, index_name, doc_type)
+        print('ELS Stub Indexer getting called...')
+        print('%s %s %s %s' % (self, data, index_name, doc_type))
 
     def search(self, index_name, query):
         """Search in Stub Indexer."""
 
-        print 'ELS Stub Indexer getting called...'
-        print '%s %s %s' % (self, index_name, query)
+        print('ELS Stub Indexer getting called...')
+        print('%s %s %s' % (self, index_name, query))
 
 try:
     import elasticsearch

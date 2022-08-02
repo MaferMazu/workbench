@@ -2,7 +2,7 @@
 
 import zerorpc
 import os
-import client_helper
+from . import client_helper
 
 
 def run():
@@ -31,7 +31,7 @@ def run():
             # Index the view_pcap output (notice we can ask for any worker output)
             # Also (super important) it all happens on the server side.
             workbench.index_worker_output('view_pcap', md5, 'pcap_bro', None)
-            print '\n\n<<< PCAP Bro log Data: %s Indexed>>>' % (base_name)
+            print('\n\n<<< PCAP Bro log Data: %s Indexed>>>' % (base_name))
 
 
 def test():

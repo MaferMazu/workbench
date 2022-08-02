@@ -13,14 +13,14 @@ class HelpBase(object):
             return {'help': input_data['help'], 'type_tag': input_data['type_tag']}
         elif type_tag == 'worker':
             out_keys = ['name', 'dependencies', 'docstring', 'type_tag'] 
-            return {key: value for key, value in input_data.iteritems() if key in out_keys}
+            return {key: value for key, value in input_data.items() if key in out_keys}
         elif type_tag == 'command':
             out_keys = ['command', 'sig', 'docstring', 'type_tag']
-            return {key: value for key, value in input_data.iteritems() if key in out_keys}
+            return {key: value for key, value in input_data.items() if key in out_keys}
         elif type_tag == 'other':
             return input_data
         else:
-            print 'Got a malformed info object %s' % input_data
+            print('Got a malformed info object %s' % input_data)
             return input_data
 
 # Unit test: Create the class, the proper input and run the execute() method for a test
@@ -38,13 +38,13 @@ def test():
     # Execute the worker (unit test)
     worker = HelpBase()
     output = worker.execute(input_data)
-    print '\n<<< Unit Test >>>'
-    print output
+    print('\n<<< Unit Test >>>')
+    print(output)
 
     # Execute the worker (server test)
     output = workbench.work_request('help_base', 'meta')
-    print '\n<<< Server Test >>>'
-    print output['help_base']
+    print('\n<<< Server Test >>>')
+    print(output['help_base'])
 
 if __name__ == "__main__":
     test()

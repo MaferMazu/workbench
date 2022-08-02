@@ -24,7 +24,7 @@ def test():
 
     md5 = workbench.store_sample(open('../data/pcap/http.pcap', 'rb').read(), 'http.pcap', 'pcap')
     output = workbench.work_request('view_pcap_meta', md5)
-    print 'ViewPcap: '
+    print('ViewPcap: ')
     import pprint
     pprint.pprint(output)
 

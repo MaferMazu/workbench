@@ -7,7 +7,7 @@ import os
 import hashlib
 import collections
 import pprint
-from rekall_adapter.rekall_adapter import RekallAdapter
+from .rekall_adapter.rekall_adapter import RekallAdapter
 
 class MemoryImageDllList(object):
     ''' This worker computes dlllist for memory image files. '''
@@ -58,7 +58,7 @@ class MemoryImageDllList(object):
                     base_info = self.parse_base(row)
                     row.update(base_info)
             else:
-                print 'Got unknown line %s: %s' % (line['type'], line['data'])
+                print('Got unknown line %s: %s' % (line['type'], line['data']))
 
         # All done
         return self.output
@@ -87,19 +87,19 @@ def test():
     # Execute the worker (unit test)
     worker = MemoryImageDllList()
     output = worker.execute({'sample':{'raw_bytes':raw_bytes}})
-    print '\n<<< Unit Test >>>'
-    print 'Meta: %s' % output['meta']
-    for name, table in output['tables'].iteritems():
-        print '\nTable: %s' % name
+    print('\n<<< Unit Test >>>')
+    print('Meta: %s' % output['meta'])
+    for name, table in output['tables'].items():
+        print('\nTable: %s' % name)
         pprint.pprint(table)
     assert 'Error' not in output
 
     # Execute the worker (server test)
     output = workbench.work_request('mem_dlllist', md5)['mem_dlllist']
-    print '\n<<< Server Test >>>'
-    print 'Meta: %s' % output['meta']
-    for name, table in output['tables'].iteritems():
-        print '\nTable: %s' % name
+    print('\n<<< Server Test >>>')
+    print('Meta: %s' % output['meta'])
+    for name, table in output['tables'].items():
+        print('\nTable: %s' % name)
         pprint.pprint(table)
     assert 'Error' not in output
 

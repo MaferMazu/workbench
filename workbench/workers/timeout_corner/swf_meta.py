@@ -3,9 +3,9 @@
 '''
 from swf.movie import SWF
 try:
-    from cStringIO import StringIO
+    from io import StringIO
 except ImportError:
-    from StringIO import StringIO
+    from io import StringIO
 
 class SWFMeta():
     ''' This worker computes a bunch of meta-data about a SWF file '''
@@ -68,7 +68,7 @@ def test():
     # Execute the worker
     worker = SWFMeta()
     output = worker.execute(input_data)
-    print 'SWFMeta: '
+    print('SWFMeta: ')
     import pprint
     pprint.pprint(output)
 

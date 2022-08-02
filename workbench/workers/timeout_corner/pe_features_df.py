@@ -19,7 +19,7 @@ class PEFeaturesDF(object):
     def execute(self, input_data):
         """This worker puts the output of pe_features into a dictionary of dataframes"""
         if 'sample' in input_data:
-            print 'Warning: PEFeaturesDF is supposed to be called on a sample_set'
+            print('Warning: PEFeaturesDF is supposed to be called on a sample_set')
             self.samples.append(input_data['sample']['md5'])
         else:
             self.samples = input_data['sample_set']['md5_list']
@@ -98,11 +98,11 @@ def test():
             md5 = hashlib.md5(raw_bytes).hexdigest()
             md5_list.append(md5)
             if workbench.has_sample(md5):
-                print 'Workbench already has this sample %s' % md5
+                print('Workbench already has this sample %s' % md5)
             else:
                 # Store the sample into workbench
                 md5 = workbench.store_sample(raw_bytes, filename, 'unknown')
-                print 'Filename %s uploaded: type_tag %s, md5 %s' % (filename, 'unknown', md5)
+                print('Filename %s uploaded: type_tag %s, md5 %s' % (filename, 'unknown', md5))
 
     # Store the sample_set
     set_md5 = workbench.store_sample_set(md5_list)
@@ -110,12 +110,12 @@ def test():
     # Execute the worker (unit test)
     worker = PEFeaturesDF()
     output = worker.execute({'sample_set': {'md5_list': workbench.get_sample_set(set_md5)}})
-    print '\n<<< Unit Test >>>'
+    print('\n<<< Unit Test >>>')
     pprint.pprint(output)
 
     # Execute the worker (server test)
     output = workbench.work_request('pe_features_df', set_md5)['pe_features_df']
-    print '\n<<< Server Test >>>'
+    print('\n<<< Server Test >>>')
     pprint.pprint(output)
 
 if __name__ == "__main__":

@@ -16,7 +16,7 @@ class ViewPcap(object):
         view = {}
 
         # Grab logs from Bro
-        view['bro_logs'] = {key: input_data['pcap_bro'][key] for key in input_data['pcap_bro'].keys() if '_log' in key}
+        view['bro_logs'] = {key: input_data['pcap_bro'][key] for key in list(input_data['pcap_bro'].keys()) if '_log' in key}
 
         # Grab logs from Bro
         view['extracted_files'] = input_data['pcap_bro']['extracted_files']
@@ -45,12 +45,12 @@ def test():
     # Execute the worker (unit test)
     worker = ViewPcap()
     output = worker.execute(input_data)
-    print '\n<<< Unit Test >>>'
+    print('\n<<< Unit Test >>>')
     pprint.pprint(output)
 
     # Execute the worker (server test)
     output = workbench.work_request('view_pcap', md5)
-    print '\n<<< Server Test >>>'
+    print('\n<<< Server Test >>>')
     pprint.pprint(output)
 
 if __name__ == "__main__":

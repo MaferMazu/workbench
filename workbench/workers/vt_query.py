@@ -3,7 +3,7 @@
 import os
 import requests
 import collections
-import ConfigParser
+import configparser
 import pprint
 
 class VTQuery(object):
@@ -15,7 +15,7 @@ class VTQuery(object):
 
         # Grab API key from configuration file
         config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../server/config.ini')
-        conf = ConfigParser.ConfigParser()
+        conf = configparser.ConfigParser()
         conf.read(config_path)
         self.apikey = conf.get('workbench', 'vt_apikey')
 
@@ -40,7 +40,7 @@ class VTQuery(object):
             return {'vt_error': 'VirusTotal Query Error, no valid response... past per min quota?'}
         
         # Just pull some of the fields
-        output = {field:vt_output[field] for field in vt_output.keys() if field not in self.exclude}
+        output = {field:vt_output[field] for field in list(vt_output.keys()) if field not in self.exclude}
         
         # Check for not-found
         not_found = False if output else True        
@@ -55,7 +55,7 @@ class VTQuery(object):
 
         # Organize the scans fields
         scan_results = collections.Counter()
-        for scan in vt_output['scans'].values():
+        for scan in list(vt_output['scans'].values()):
             if 'result' in scan:
                 if scan['result']:
                     scan_results[scan['result']] += 1
@@ -81,12 +81,12 @@ def test():
     # Execute the worker (unit test)
     worker = VTQuery()
     output = worker.execute(input_data)
-    print '\n<<< Unit Test >>>'
+    print('\n<<< Unit Test >>>')
     pprint.pprint(output)
 
     # Execute the worker (server test)
     output = workbench.work_request('vt_query', md5)
-    print '\n<<< Server Test >>>'
+    print('\n<<< Server Test >>>')
     pprint.pprint(output)
 
 if __name__ == "__main__":

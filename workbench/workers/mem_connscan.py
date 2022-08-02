@@ -7,7 +7,7 @@ import os
 import hashlib
 import pprint
 import collections
-from rekall_adapter.rekall_adapter import RekallAdapter
+from .rekall_adapter.rekall_adapter import RekallAdapter
 
 class MemoryImageConnScan(object):
     ''' This worker computes connscan-data for memory image files. '''
@@ -43,7 +43,7 @@ class MemoryImageConnScan(object):
                 row = RekallAdapter.process_row(line['data'], self.column_map)
                 self.output['tables'][self.current_table_name].append(row)
             else:
-                print 'Note: Ignoring rekall message of type %s: %s' % (line['type'], line['data'])
+                print('Note: Ignoring rekall message of type %s: %s' % (line['type'], line['data']))
 
         # All done
         return self.output
@@ -64,21 +64,21 @@ def test():
     # Do we have the memory forensics file?
     data_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../data/memory_images/exemplar4.vmem')
     if not os.path.isfile(data_path):
-        print 'Not finding exemplar4.mem... Downloading now...'
-        import urllib
-        urllib.urlretrieve('http://s3-us-west-2.amazonaws.com/workbench-data/memory_images/exemplar4.vmem', data_path)
+        print('Not finding exemplar4.mem... Downloading now...')
+        import urllib.request, urllib.parse, urllib.error
+        urllib.request.urlretrieve('http://s3-us-west-2.amazonaws.com/workbench-data/memory_images/exemplar4.vmem', data_path)
 
     # Did we properly download the memory file?
     if not os.path.isfile(data_path):
-        print 'Downloading failed, try it manually...'
-        print 'wget http://s3-us-west-2.amazonaws.com/workbench-data/memory_images/exemplar4.vmem'
+        print('Downloading failed, try it manually...')
+        print('wget http://s3-us-west-2.amazonaws.com/workbench-data/memory_images/exemplar4.vmem')
         exit(1)
     if os.stat(data_path).st_size < 100000:
         data_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../data/memory_images/exemplar4.vmem') 
         with open(data_path, 'rb') as mem_file:
-            print 'Corrupt memory image: %s' % mem_file.read()[:500]
-        print 'Downloading failed, try it manually...'
-        print 'wget http://s3-us-west-2.amazonaws.com/workbench-data/memory_images/exemplar4.vmem'
+            print('Corrupt memory image: %s' % mem_file.read()[:500])
+        print('Downloading failed, try it manually...')
+        print('wget http://s3-us-west-2.amazonaws.com/workbench-data/memory_images/exemplar4.vmem')
         exit(1)        
 
     # Store the sample
@@ -92,19 +92,19 @@ def test():
     # Execute the worker (unit test)
     worker = MemoryImageConnScan()
     output = worker.execute({'sample':{'raw_bytes':raw_bytes}})
-    print '\n<<< Unit Test >>>'
-    print 'Meta: %s' % output['meta']
-    for name, table in output['tables'].iteritems():
-        print '\nTable: %s' % name
+    print('\n<<< Unit Test >>>')
+    print('Meta: %s' % output['meta'])
+    for name, table in output['tables'].items():
+        print('\nTable: %s' % name)
         pprint.pprint(table)
     assert 'Error' not in output
 
     # Execute the worker (server test)
     output = workbench.work_request('mem_connscan', md5)['mem_connscan']
-    print '\n<<< Server Test >>>'
-    print 'Meta: %s' % output['meta']
-    for name, table in output['tables'].iteritems():
-        print '\nTable: %s' % name
+    print('\n<<< Server Test >>>')
+    print('Meta: %s' % output['meta'])
+    for name, table in output['tables'].items():
+        print('\nTable: %s' % name)
         pprint.pprint(table)
     assert 'Error' not in output
 

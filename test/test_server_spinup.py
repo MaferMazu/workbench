@@ -8,6 +8,6 @@ class TestServerSpinup(object):
             test doesn't do anything, because it hits the 'workbench_conn'
             fixture a workbench server will spin up '''
 
-        print '\nStarting up the Workbench server...'
-        print workbench_conn
+        print('\nStarting up the Workbench server...')
+        print(workbench_conn)
         return True

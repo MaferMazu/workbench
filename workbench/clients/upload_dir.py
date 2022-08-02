@@ -2,7 +2,7 @@
 
 import zerorpc
 import os
-import client_helper
+from . import client_helper
 import hashlib
 import pprint
 
@@ -45,11 +45,11 @@ def run():
             md5 = hashlib.md5(raw_bytes).hexdigest()
             md5_list.append(md5)
             if workbench.has_sample(md5):
-                print 'Workbench already has this sample %s' % md5
+                print('Workbench already has this sample %s' % md5)
             else:
                 # Store the sample into workbench
                 md5 = workbench.store_sample(raw_bytes, filename, 'unknown')
-                print 'Filename %s uploaded: type_tag %s, md5 %s' % (filename, 'unknown', md5)
+                print('Filename %s uploaded: type_tag %s, md5 %s' % (filename, 'unknown', md5))
 
     # Okay now explode any container types
     zip_files = workbench.generate_sample_set('zip')
@@ -61,14 +61,14 @@ def run():
 
 
     # Make sure all files are properly identified
-    print 'Info: Ensuring File Identifications...'
+    print('Info: Ensuring File Identifications...')
     type_tag_set = set()
     all_files = workbench.generate_sample_set()
     meta_all = workbench.set_work_request('meta', all_files)
     for meta in meta_all:
         type_tag_set.add(meta['type_tag'])
         if meta['type_tag'] in ['unknown', 'own']:
-            print meta
+            print(meta)
     pprint.pprint(type_tag_set)
 
 

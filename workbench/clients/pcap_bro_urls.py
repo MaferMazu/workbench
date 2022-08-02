@@ -3,7 +3,7 @@
 import zerorpc
 import os
 import pprint
-import client_helper
+from . import client_helper
 
 def run():
     """This client gets extracts URLs from PCAP files (via Bro logs)."""
@@ -34,9 +34,9 @@ def run():
                 log_md5 = results['pcap_bro']['http_log']
                 http_data = workbench.stream_sample(log_md5)  # None Means all data
                 urls = set( row['host'] for row in http_data)
-                print '<<< %s >>>' % filename
+                print('<<< %s >>>' % filename)
                 pprint.pprint(list(urls))
-                print
+                print()
 
 
 def test():

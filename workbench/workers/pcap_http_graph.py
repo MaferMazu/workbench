@@ -6,7 +6,7 @@ import gevent
 
 def gsleep():
     ''' Convenience method for gevent.sleep '''
-    print '*** Gevent Sleep ***'
+    print('*** Gevent Sleep ***')
     gevent.sleep(0)
 
 class PcapHTTPGraph(object):
@@ -67,7 +67,7 @@ class PcapHTTPGraph(object):
 
     def http_log_graph(self, stream):
         ''' Build up a graph (nodes and edges from a Bro http.log) '''
-        print 'Entering http_log_graph...'
+        print('Entering http_log_graph...')
         for row in list(stream):
 
             # Skip '-' hosts
@@ -173,12 +173,12 @@ def test():
     # Execute the worker (unit test)
     worker = PcapHTTPGraph()
     output = worker.execute(input_data)
-    print '\n<<< Unit Test >>>'
+    print('\n<<< Unit Test >>>')
     pprint.pprint(output)
 
     # Execute the worker (server test)
     output = workbench.work_request('pcap_http_graph', md5)
-    print '\n<<< Server Test >>>'
+    print('\n<<< Server Test >>>')
     pprint.pprint(output)
 
 if __name__ == "__main__":
